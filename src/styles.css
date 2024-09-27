@@ -1,0 +1,48 @@
+.robot-table-container {
+    position: relative;
+    width: 786px;
+    margin-top: 20px;
+    margin-left: 81.01px;
+}
+
+.robot-table {
+    width: 786px;
+    height: auto;
+    border-collapse: collapse;
+}
+
+.robot-table th {
+    height: 49.73px;
+}
+
+thead.thead-dark th {
+    background-color: #343a40;
+    color: white;
+}
+
+.robot-image {
+    margin-bottom: 0px;
+}
+
+.container img {
+    display: block;
+    margin: 0 auto;
+    max-height: 300px;
+    margin-bottom: 10px;
+}
+
+
+.footer {
+    background-color: white;
+    padding: 15px 0;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    margin-top: 20px;
+}
+
+.footer p {
+    margin: 0;
+}
