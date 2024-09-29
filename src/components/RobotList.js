@@ -1,9 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles.css';
 import robotImage from '../assets/ImagenPrincipalRobots.png';
+import RobotDetail from './RobotDetail';
+import RobotTable from './RobotTable';
 
-const RobotList = ({ robots, onRobotClick, selectedRobot }) => {
+
+const RobotList = () => {
+
+    const [selectedRobotId, setSelectedRobotId] = useState(null);
+    const [robots, setRobots] = useState([]);
+    
+    const fetchRobots = async () => {
+        try {
+            const roman = await fetch("http://localhost:5001/robots")
+            const json = await roman.json()
+            console.log("hola", json)
+            setRobots(json)
+        } catch (error) {
+            console.log(error)   
+        }
+    }
+
+    useEffect(() => {
+        fetchRobots()
+    }, [])
+
+    const handleRobotClick = (robotId) => {
+        setSelectedRobotId(robotId);
+    };
+
     return (
         <div className="container mt-5">
             <h2 className="text-center">Adopta un Robot con Robot Lovers!</h2>
@@ -12,38 +38,11 @@ const RobotList = ({ robots, onRobotClick, selectedRobot }) => {
             </div>
             <div className="row">
                 <div className="col-md-8">
-                    <table className="table robot-table table-bordered table-striped">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Modelo</th>
-                                <th>Empresa Fabricante</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {robots.map((robot) => (
-                                <tr key={robot.id} onClick={() => onRobotClick(robot)}>
-                                    <td>{robot.id}</td>
-                                    <td>{robot.nombre}</td>
-                                    <td>{robot.modelo}</td>
-                                    <td>{robot.empresa}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <RobotTable robots={robots} onRobotClick={handleRobotClick}/>
                 </div>
                 <div className="col-md-4">
-                    {selectedRobot ? (
-                        <div className="robot-detail-card">
-                            <h3>{selectedRobot.nombre}</h3>
-                            <img src={selectedRobot.imagen} alt={selectedRobot.nombre} className="img-fluid mb-3" />
-                            <ul>
-                                <li><strong>Año de Fabricación:</strong> {selectedRobot.anioFabricacion}</li>
-                                <li><strong>Capacidad de Procesamiento:</strong> {selectedRobot.capacidadProcesamiento}</li>
-                                <li><strong>Humor:</strong> {selectedRobot.humor}</li>
-                            </ul>
-                        </div>
+                    {selectedRobotId ? (
+                        <RobotDetail selectedRobotId={selectedRobotId}/>
                     ) : (
                         <p className="text-center">Selecciona un robot para ver más detalles.</p>
                     )}

@@ -7,15 +7,30 @@ function LoginForm({ onLoginSuccess }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        const validUsername = 'jd.briceno';
-        const validPassword = 'password123';
+    const handleLogin = async (e) => {
 
-        if (username === validUsername && password === validPassword) {
-            onLoginSuccess();
-        } else {
-            setError('Error de autenticación. Revise sus credenciales');
+        e.preventDefault()
+        try {
+            const roman = await fetch('http://localhost:5001/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    login: username,
+                    password: password
+                })
+            });            
+            const json = await roman.json()
+            console.log(json)
+            if ("success" === json.status) {
+                onLoginSuccess();
+            } else {
+                setError('Error de autenticación. Revise sus credenciales');
+            }
+
+        } catch (error) {
+            console.log(error)   
         }
     };
 
